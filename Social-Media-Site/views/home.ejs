@@ -1,0 +1,59 @@
+<link rel="stylesheet" type="text/css" href="/css/home.css">
+<div id="main-section">
+<section id="all-users">
+        <div id="all-users-header">People on Connecti</div>
+        <% for(u of all_users) {%>
+            <div class = "user-list"><a href="/users/profile/<%= u._id %>"><%= u.name %></a></div>
+        <% } %>
+</section>
+<section id="feed-posts">
+    <% if(locals.user) { %>
+        <div id="post-form">
+            <div id="welcome-user">Welcome, <%= user.name %>!</div>
+            <form action="/posts/create" id="new-post-form"  method="POST">
+                <textarea id="post-content" name="content" rows="3" cols="30" placeholder="What's on your mind?" required></textarea>
+                <br/>
+                <button type="submit">Post</button>
+            </form>
+        </div>
+        
+        <% } %>
+            <div id="posts-container">
+                
+                <ul type="none">
+                    <% for(i of posts) { %>
+                        <%- include('_post'); -%>
+                    <% } %>
+
+                </ul>
+            </div>
+</section>
+<% if(locals.user) {%>
+    <section id="user-friends">
+        <div id="user-friends-header">Your Friends</div>
+        <% for(let u of current_user.friends) {%>
+            <div class = "user-friends-list"><a href="/users/profile/<%= u._id %>"><%= u.name %></a></div>
+        <% } %>
+    </section>
+<% } %>
+<%- include('chat_list') -%>
+<%- include('chat_box'); -%>
+</div>
+<script src="js/toggle_likes.js"></script>
+<script src="/js/home_post_comment.js" ></script>
+<script src="/js/home_posts.js"></script>
+
+<!--<script>
+    $('.toggle-likes-button').each(function(){
+        let self = this;
+        new ToggleLike($(self));
+    });
+</script>-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.2.0/socket.io.js"></script>
+<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"></script>-->
+<script src="<%= 'js/chat_engine.js' %>"></script>
+<% if(locals.user) { %>
+<!--<script>
+    new ChatEngine('chat-box', '<%= locals.user.name %>', '<%= locals.user.email %>');
+</script>
+<% } %>-->
